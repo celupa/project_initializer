@@ -113,13 +113,18 @@ Do you wish to continue? (y/n)
     else:
         print("---Deletion cancelled.")
 
-def detect_os():
+def detect_os() -> str | None:
     os_name = platform.system()
 
     if os_name in SUPPORTED_OS:
         return os_name
-    else:
-        return None
+
+    return None
+    
+def make_gitauto_exec(script_path: str) -> None:
+    """Make the git_auto.sh script executable on Linux"""
+
+    subprocess.run(["chmod", "+x", f"{script_path}"], check=True)
     
 def create_git_auto(git_extension: str, git_content: str) -> None:
     """Creates a git_auto.ext script in the "scripts" folder."""
@@ -130,6 +135,10 @@ def create_git_auto(git_extension: str, git_content: str) -> None:
     filename = WORKING_DIR / SCRIPTS_FOLDER_NAME / f"git_auto{git_extension}"
     with open(filename, "w", newline="") as git_auto_script:
         git_auto_script.write(git_content)
+    
+    # make linux script executable
+    if "sh" in git_extension:
+        make_gitauto_exec(str(filename))
 
 def format_content(text: str) -> str:
     """Remove leading spaces from a text."""
