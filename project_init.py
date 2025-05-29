@@ -9,6 +9,8 @@ from typing import List, Tuple
 
 
 # CONFIG------------------------------------------------------------------------
+# will create the following files and folders based on running OS
+# modify folder/files names and content here
 SUPPORTED_OS = ("Windows", "Linux")
 WORKING_DIR = Path.cwd()
 PROJECT_ARTIFACTS = []
