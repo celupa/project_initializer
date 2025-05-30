@@ -1,3 +1,7 @@
+"""Main app file. May be deployed as a package."""
+
+# TODO: look into pyproject.toml before deployment
+
 import os
 import shutil
 import platform
@@ -26,14 +30,14 @@ TESTS_FOLDER_NAME = "tests"
 DATA_FOLDER_NAME = "data"
 IMAGES_FOLDER_NAME = "images"
 
-DEFAULT_FOLDERS_LIST = [
+DEFAULT_FOLDERS_LIST = (
     DOCUMENTS_FOLDER_NAME,
     MODULES_FOLDER_NAME,
     SCRIPTS_FOLDER_NAME,
     TESTS_FOLDER_NAME,
     DATA_FOLDER_NAME,
     IMAGES_FOLDER_NAME
-]
+)
 
 # files
 
@@ -78,6 +82,7 @@ GIT_AUTO_ROUTING = {
 
 # LOGIC-------------------------------------------------------------------------
 def create_folders(folders_list: list=DEFAULT_FOLDERS_LIST) -> None:
+    """Create starting folders in the app directory."""
     for folder_name in folders_list:
         folder_path = WORKING_DIR / folder_name
         if not folder_path.exists():
@@ -117,12 +122,13 @@ Do you wish to continue? (y/n)
                         shutil.rmtree(item)
                     else:
                         item.unlink()
-                except Exception as e:
-                    print("Failed to delete {item}: {e}")
+                except (FileNotFoundError, PermissionError, OSError) as e:
+                    print(f"Failed to delete {item}: {e}")
     else:
         print("---Deletion cancelled.")
 
 def detect_os() -> str | None:
+    """Return the string representation of the Operation System the app is running on."""
     os_name = platform.system()
 
     if os_name in SUPPORTED_OS:
@@ -135,14 +141,14 @@ def make_gitauto_exec(script_path: str) -> None:
 
     subprocess.run(["chmod", "+x", f"{script_path}"], check=True)
     
-def create_git_auto(git_extension: str, git_content: str) -> None:
+def create_git_auto(extension: str, content: str) -> None:
     """Creates a git_auto.ext script in the "scripts" folder."""
-    filename = WORKING_DIR / SCRIPTS_FOLDER_NAME / f"git_auto{git_extension}"
-    with open(filename, "w") as git_auto_script:
-        git_auto_script.write(git_content)
+    filename = WORKING_DIR / SCRIPTS_FOLDER_NAME / f"git_auto{extension}"
+    with open(filename, "w", encoding="utf-8") as git_auto_script:
+        git_auto_script.write(content)
     
     # make linux script executable
-    if "sh" in git_extension:
+    if "sh" in extension:
         make_gitauto_exec(str(filename))
 
 def format_content(text: str) -> str:
