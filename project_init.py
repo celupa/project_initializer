@@ -1,16 +1,16 @@
 """Main app file. May be deployed as a package."""
 
 # TODO: look into pyproject.toml before deployment
+# TODO: automate pylint, black, isort
+# TODO: look into pre-commit hooks (substitute to black, isort and pylint?) and makefile
 
 import os
-import shutil
 import platform
+import shutil
 import subprocess
-from pathlib import Path
 from datetime import datetime
+from pathlib import Path
 from typing import List, Tuple
-
-
 
 # CONFIG------------------------------------------------------------------------
 # will create the following files and folders based on running OS
@@ -36,7 +36,7 @@ DEFAULT_FOLDERS_LIST = (
     SCRIPTS_FOLDER_NAME,
     TESTS_FOLDER_NAME,
     DATA_FOLDER_NAME,
-    IMAGES_FOLDER_NAME
+    IMAGES_FOLDER_NAME,
 )
 
 # files
@@ -58,7 +58,7 @@ GIT_AUTO_ROUTING = {
 
             # push to remote
             git push
-            """
+            """,
     },
     "Windows": {
         "extension": ".bat",
@@ -68,7 +68,7 @@ GIT_AUTO_ROUTING = {
             git add .
 
             REM set commit message
-            set commit_message=%1
+            set commit_message=%*
             if "%commit_message%"=="" set commit_message=auto commit
 
             REM commit
@@ -76,12 +76,13 @@ GIT_AUTO_ROUTING = {
 
             REM push
             git push
-        """
-    }
+        """,
+    },
 }
 
+
 # LOGIC-------------------------------------------------------------------------
-def create_folders(folders_list: list=DEFAULT_FOLDERS_LIST) -> None:
+def create_folders(folders_list: list = DEFAULT_FOLDERS_LIST) -> None:
     """Create starting folders in the app directory."""
     for folder_name in folders_list:
         folder_path = WORKING_DIR / folder_name
@@ -91,9 +92,11 @@ def create_folders(folders_list: list=DEFAULT_FOLDERS_LIST) -> None:
         else:
             print(f"---Already exists: {folder_path}")
 
+
 def snapshot_initial_state() -> Tuple[datetime, List[str]]:
     """Take a snapshot of the initial project (will be used to reverse changes)."""
     return datetime.now(), [path.resolve() for path in WORKING_DIR.iterdir()]
+
 
 def reverse_init() -> None:
     """
@@ -103,14 +106,14 @@ def reverse_init() -> None:
     """
 
     user_input = input(
-f"""
+        f"""
 --- This action will delete all content except the following items:
 
 {os.linesep.join([str(path) for path in PROJECT_ARTIFACTS])}
 
 Do you wish to continue? (y/n)
 """
-)
+    )
 
     # TODO: handle files in-use
     if user_input == "y":
@@ -127,6 +130,7 @@ Do you wish to continue? (y/n)
     else:
         print("---Deletion cancelled.")
 
+
 def detect_os() -> str | None:
     """Return the string representation of the Operation System the app is running on."""
     os_name = platform.system()
@@ -135,26 +139,30 @@ def detect_os() -> str | None:
         return os_name
 
     return None
-    
+
+
 def make_gitauto_exec(script_path: str) -> None:
     """Make the git_auto.sh script executable on Linux"""
 
     subprocess.run(["chmod", "+x", f"{script_path}"], check=True)
-    
+
+
 def create_git_auto(extension: str, content: str) -> None:
     """Creates a git_auto.ext script in the "scripts" folder."""
     filename = WORKING_DIR / SCRIPTS_FOLDER_NAME / f"git_auto{extension}"
     with open(filename, "w", encoding="utf-8") as git_auto_script:
         git_auto_script.write(content)
-    
+
     # make linux script executable
     if "sh" in extension:
         make_gitauto_exec(str(filename))
+
 
 def format_content(text: str) -> str:
     """Remove leading spaces from a text."""
     formatted_text = "\n".join(line.lstrip() for line in text.strip().splitlines())
     return formatted_text
+
 
 # RUN---------------------------------------------------------------------------
 if __name__ == "__main__":
@@ -163,7 +171,7 @@ if __name__ == "__main__":
     # get get git auto script extension and content based on OS
     git_extension, git_content = (
         GIT_AUTO_ROUTING[OPERATING_SYSTEM]["extension"],
-        format_content(GIT_AUTO_ROUTING[OPERATING_SYSTEM]["content"])
+        format_content(GIT_AUTO_ROUTING[OPERATING_SYSTEM]["content"]),
     )
     create_folders()
     create_git_auto(git_extension, git_content)
