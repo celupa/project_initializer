@@ -16,6 +16,7 @@ WORKING_DIR = Path.cwd()
 PROJECT_ARTIFACTS = []
 INITIALIZATION_TIME = None
 OPERATING_SYSTEM = None
+ALL_ADDITIONS = []
 
 # folders
 DOCUMENTS_FOLDER_NAME = "docs"
@@ -79,8 +80,11 @@ GIT_AUTO_ROUTING = {
 def create_folders(folders_list: list=DEFAULT_FOLDERS_LIST) -> None:
     for folder_name in folders_list:
         folder_path = WORKING_DIR / folder_name
-        folder_path.mkdir(exist_ok=True)
-        print(f"---Created: {folder_path}")
+        if not folder_path.exists():
+            folder_path.mkdir(exist_ok=True)
+            print(f"---Created: {folder_path}")
+        else:
+            print(f"---Already exists: {folder_path}")
 
 def snapshot_initial_state() -> Tuple[datetime, List[str]]:
     """Take a snapshot of the initial project (will be used to reverse changes)."""
@@ -133,12 +137,8 @@ def make_gitauto_exec(script_path: str) -> None:
     
 def create_git_auto(git_extension: str, git_content: str) -> None:
     """Creates a git_auto.ext script in the "scripts" folder."""
-    # adding the newline arg for the special kid: Windows –
-    # it automatically adds a "\r" to "\n", leading to duplicate newlines
-    # reason? historical (carriage return). couldn't be bothered to investigate
-    # Yes Bobby, you're daddy's 'special' little boy.
     filename = WORKING_DIR / SCRIPTS_FOLDER_NAME / f"git_auto{git_extension}"
-    with open(filename, "w", newline="") as git_auto_script:
+    with open(filename, "w") as git_auto_script:
         git_auto_script.write(git_content)
     
     # make linux script executable
@@ -147,7 +147,7 @@ def create_git_auto(git_extension: str, git_content: str) -> None:
 
 def format_content(text: str) -> str:
     """Remove leading spaces from a text."""
-    formatted_text = os.linesep.join(line.lstrip() for line in text.strip().splitlines())
+    formatted_text = "\n".join(line.lstrip() for line in text.strip().splitlines())
     return formatted_text
 
 # RUN---------------------------------------------------------------------------
@@ -159,8 +159,7 @@ if __name__ == "__main__":
         GIT_AUTO_ROUTING[OPERATING_SYSTEM]["extension"],
         format_content(GIT_AUTO_ROUTING[OPERATING_SYSTEM]["content"])
     )
-    print(repr(git_content))
-    print(git_content)
     create_folders()
     create_git_auto(git_extension, git_content)
+    ALL_ADDITIONS = []
     # reverse_init()
