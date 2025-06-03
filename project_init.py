@@ -249,8 +249,7 @@ if __name__ == "__main__":
         GIT_AUTO_ROUTING[OPERATING_SYSTEM]["extension"],
         GIT_AUTO_ROUTING[OPERATING_SYSTEM]["content"],
     )
-    # create_folders()
-    # create_git_auto(git_extension, git_content)
+    create_folders()
+    create_git_auto(git_extension, git_content)
     write_auto_files(AUTO_FILES)
     install_dependencies()
-    # reverse_init()
