@@ -119,7 +119,7 @@ PACKAGES = {
         "command": ["pip", "install"],
     },
     "dependencies": {
-        "items": ["ruff", "mypy", "pre-commit"],
+        "items": ["ruff", "mypy", "pytest", "pre-commit"],
         "command": ["uv", "pip", "install"]
     },
     "precommit_hook": {
