@@ -1,4 +1,4 @@
-"""Main app file. May be deployed as a package."""
+"""Automates project initialization."""
 
 import platform
 import subprocess
