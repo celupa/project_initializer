@@ -69,9 +69,11 @@ endif
 	git commit -m "$(m)"
 	git push
 """
+APP = ""
 AUTO_FILES ={
     ".pre-commit-config.yaml": PRE_COMMIT_CONTENT,
-    "Makefile": MAKEFILE_CONTENT
+    "Makefile": MAKEFILE_CONTENT,
+    "app.py": APP
 }
 
 # routing
