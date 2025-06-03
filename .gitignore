@@ -1,6 +1,9 @@
 # custom
 scripts/
-testing.py
+testing.*
+git_auto.*
+.pre-commit-config.yaml
+Makefile
 .vscode
 
 # Byte-compiled / optimized / DLL files
