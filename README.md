@@ -1,4 +1,4 @@
-# project_initializer
+# Overview
 Quick, dirty and customizable script to bootstrap a new project.
 
 ## Requirements
