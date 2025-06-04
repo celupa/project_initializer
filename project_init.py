@@ -238,10 +238,6 @@ def install_dependencies() -> None:
             except subprocess.CalledProcessError as e:
                 print(f"---Failed to install {package}. Check environment: {e}")
 
-
-def main() -> None:
-    """Wrap the workflow into CLI > Makefile > pre-commit"""
-
 # RUN---------------------------------------------------------------------------
 if __name__ == "__main__":
     INITIALIZATION_TIME, PROJECT_ARTIFACTS = snapshot_initial_state()
