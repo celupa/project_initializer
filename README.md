@@ -15,7 +15,7 @@ At the project root level, run the following commands to push to your Git repo w
 - Detects OS (Windows or Linux currently)
 - Creates standard folders (docs, scripts...)
 - Generates pre-filled config files:
-  - git_auto.sh|bat depending on OS (automatically makes git_auto.sh executable on linux)
+  - git_auto.(sh/bat) depending on OS (automatically makes git_auto.sh executable on linux)
   - pre-commit-hook.yaml
   - Makefile (setup is left to the user's discretion)
 - Installs dependencies and related installations:
