@@ -6,10 +6,10 @@ Quick, dirty and customizable script to bootstrap a new project.
 - Git initialized in the local project
 
 ## Usage
-Download and place "project_init.py" in the root directory of your project and execute it. After the execution you can delete the file.
+Download and place *project_init.py* in the root directory of your project and execute it. After the execution you can delete the file.
 At the project root level, run the following commands to push to your Git repo with the pre-commit config:
-- Linux (bash): "scripts/git_auto.sh" 
-- Windows (cmd): "absolute path of git_auto.bat"
+- Linux (bash): *scripts/git_auto.sh* 
+- Windows (cmd): *absolute path of git_auto.bat*
 
 ## Features
 - Detects OS (Windows or Linux currently)
@@ -25,7 +25,7 @@ At the project root level, run the following commands to push to your Git repo w
   - [pytest](https://docs.pytest.org/)
   - [pre-commit](https://pre-commit.com/) (+ install)
 
- You can easily modify the config in "project_init.py" to your tastes (dependencies, git flow...).
+ You can easily modify the config in *project_init.py* to your tastes (dependencies, git flow...).
 
 ## Example
 ![before and after](assets/before_after_projinit.png)
